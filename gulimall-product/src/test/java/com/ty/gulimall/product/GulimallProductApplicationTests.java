@@ -3,7 +3,7 @@ package com.ty.gulimall.product;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ty.gulimall.product.entity.BrandEntity;
 import com.ty.gulimall.product.service.BrandService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
