@@ -17,4 +17,5 @@ dependency-reduced-pom.xml
 **/.mvn
 **/target/
 .idea
-./gulimall-third-party/src/main/resources/application.yml
+gulimall-third-party/src/main/resources/application.yml
+renren-generator/
