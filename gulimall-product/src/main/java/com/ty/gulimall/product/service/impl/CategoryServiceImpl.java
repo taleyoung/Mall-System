@@ -2,6 +2,8 @@ package com.ty.gulimall.product.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,4 +65,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return children;
     }
 
+    //拿到三级分类的完整路径
+    public Long[] findCatelogPath(Long categoryId){
+        List<Long> paths = new ArrayList<>();
+        List<Long> parentPath = findParentPath(categoryId, paths);
+
+        Collections.reverse(parentPath);
+
+        return (Long[]) parentPath.toArray(new Long[parentPath.size()]);
+    }
+
+    public List<Long> findParentPath(Long categoryId, List<Long> paths){
+        paths.add(categoryId);
+        CategoryEntity byId = this.getById(categoryId);
+        if(byId.getParentCid() != 0){
+            findParentPath(byId.getParentCid(), paths);
+        }
+        return paths;
+
+    }
 }
