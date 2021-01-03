@@ -3,6 +3,7 @@ package com.ty.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ty.common.utils.PageUtils;
 import com.ty.gulimall.product.entity.AttrGroupEntity;
+import com.ty.gulimall.product.vo.AttrGroupRelationVo;
 
 import java.util.Map;
 
