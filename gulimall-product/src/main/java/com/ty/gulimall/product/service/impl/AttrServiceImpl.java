@@ -198,11 +198,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
     @Override
     public void deleteRelation(AttrGroupRelationVo[] attrGroupRelationVos) {
-        relationDao.delete(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", 1));
+//        relationDao.delete(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", 1));
         //批量删除
         List<AttrAttrgroupRelationEntity> entities = Arrays.asList(attrGroupRelationVos).stream().map(item -> {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
-            BeanUtils.copyProperties(attrGroupRelationVos, attrAttrgroupRelationEntity);
+            BeanUtils.copyProperties(item, attrAttrgroupRelationEntity);
             return attrAttrgroupRelationEntity;
         }).collect(Collectors.toList());
         relationDao.deleteBatchRelation(entities);
