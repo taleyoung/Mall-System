@@ -83,7 +83,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<AttrEntity>()
                 .eq("attr_type", "base".equalsIgnoreCase(type)
                         ? ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode()
-                        : ProductConstant.AttrEnum.ATTR_ENUM_SALE.getCode()
+                        : ProductConstant.AttrEnum.ATTR_TYPE_SALE.getCode()
                 );;
 
         if(catelogId!=0){
@@ -110,7 +110,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                 );
                 if(relationEntity != null){
                     AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(relationEntity.getAttrGroupId());
-                    attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
+                    if(attrGroupEntity != null){
+                        attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
+                    }
+
                 }
             }
 
@@ -118,7 +121,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
             //设置分类信息
             CategoryEntity categoryEntity = categoryDao.selectById(attrEntity.getCatelogId());
-            attrRespVo.setCatelogName(categoryEntity.getName());
+            if(categoryEntity != null){
+                attrRespVo.setCatelogName(categoryEntity.getName());
+            }
+
             return attrRespVo;
         }).collect(Collectors.toList());
         pageUtils.setList(respVos);
@@ -192,6 +198,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         List<AttrAttrgroupRelationEntity> relationEntities = relationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrGroupId));
         List<Long> attrIds = relationEntities.stream().map(attr -> attr.getAttrId())
                 .collect(Collectors.toList());
+        if(attrIds.size() == 0){
+            return null;
+        }
         Collection<AttrEntity> attrEntities = this.listByIds(attrIds);
         return (List<AttrEntity>) attrEntities;
     }

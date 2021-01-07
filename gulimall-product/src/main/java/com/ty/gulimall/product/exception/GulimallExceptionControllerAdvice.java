@@ -21,7 +21,7 @@ public class GulimallExceptionControllerAdvice {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public R handleValidException(MethodArgumentNotValidException e){
-//        Log.error();
+        log.error("ERROR");
         BindingResult bindingResult = e.getBindingResult();
         Map<String, String> errorMap = new HashMap<>();
         bindingResult.getFieldErrors().forEach(fieldError -> {
@@ -32,6 +32,7 @@ public class GulimallExceptionControllerAdvice {
 
     @ExceptionHandler(value = Throwable.class)
     public R handleException(Throwable throwable){
+        log.error("ERROR", throwable.fillInStackTrace(), throwable.getMessage());
         return R.error(BizCodeEnume.UNKNOW_EXCEPTION.getCode(), BizCodeEnume.UNKNOW_EXCEPTION.getMsg());
     }
 
