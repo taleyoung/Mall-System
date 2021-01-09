@@ -4,6 +4,12 @@ spring:
     password: root
     url: jdbc:mysql://39.105.35.4:3306/gulimall_sms?characterEncoding=UTF-8
     driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 120000
+      connectionTimeout: 300000
+      leakDetectionThreshold: 300000
   cloud:
     nacos:
       discovery:
