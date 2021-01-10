@@ -19,6 +19,7 @@ import com.ty.common.utils.Query;
 import com.ty.gulimall.product.dao.ProductAttrValueDao;
 import com.ty.gulimall.product.entity.ProductAttrValueEntity;
 import com.ty.gulimall.product.service.ProductAttrValueService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("productAttrValueService")
@@ -47,6 +48,26 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao
             productAttrValueEntity.setAttrName(attr.getAttrName());
             productAttrValueEntity.setAttrValue(item.getAttrValues());
             return productAttrValueEntity;
+        }).collect(Collectors.toList());
+        this.saveBatch(collect);
+    }
+
+    @Override
+    public List<ProductAttrValueEntity> baseAttrListForSpu(Long spuId) {
+        List<ProductAttrValueEntity> entities = this.baseMapper.selectList(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+        return entities;
+    }
+
+    @Transactional
+    @Override
+    public void updateSpuAttr(Long spuId, List<ProductAttrValueEntity> entities) {
+        //1.删除之前spuId的所有属性
+        this.baseMapper.delete(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id",spuId));
+
+        //2.
+        List<ProductAttrValueEntity> collect = entities.stream().map(item -> {
+            item.setSpuId(spuId);
+            return item;
         }).collect(Collectors.toList());
         this.saveBatch(collect);
     }
