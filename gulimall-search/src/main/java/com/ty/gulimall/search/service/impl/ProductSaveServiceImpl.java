@@ -39,7 +39,7 @@ public class ProductSaveServiceImpl implements ProductSaveService {
         for(SkuEsModel model: skuEsModelList){
             //1. 构造保存请求 Index
             IndexRequest indexRequest = new IndexRequest(EsConstant.PRODUCT_INDEX);
-            indexRequest.type("doc");
+
             indexRequest.id(model.getSkuId().toString());
             String s = JSON.toJSONString(model);
             indexRequest.source(s, XContentType.JSON);
@@ -47,9 +47,14 @@ public class ProductSaveServiceImpl implements ProductSaveService {
         }
         BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, GulimallESConfig.COMMON_OPTIONS);
         //TODO: 如果批量错误
-        boolean b = bulk.hasFailures();
-        List<String> collect = Arrays.stream(bulk.getItems()).map(item -> item.getId()).collect(Collectors.toList());
-        log.info("商品上架成功");
-        return !b;
+        boolean hasFailures = bulk.hasFailures();
+        if(hasFailures){
+            log.info("商品上架失败 {}", bulk.buildFailureMessage());
+        }else{
+            List<String> collect = Arrays.stream(bulk.getItems()).map(item -> item.getId()).collect(Collectors.toList());
+            log.info("商品上架成功 {}",collect);
+        }
+        return !hasFailures;
+
     }
 }

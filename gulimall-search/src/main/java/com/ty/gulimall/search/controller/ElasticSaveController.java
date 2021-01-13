@@ -32,7 +32,7 @@ public class ElasticSaveController {
         try {
             b = productSaveService.productStatusUp(skuEsModelList);
         }catch (IOException e){
-            log.error("es商品上架错误",e);
+            log.error("es商品上架错误{}",e);
             return R.error(BizCodeEnume.PRODUCT_UP_EXCEPTION.getCode(), BizCodeEnume.PRODUCT_UP_EXCEPTION.getMsg());
         }
         if(b){
