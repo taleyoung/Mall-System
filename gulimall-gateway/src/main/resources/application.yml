@@ -37,6 +37,11 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
 
+        - id: mall_route
+          uri: lb://gulimall-product
+          predicates:
+            - Path=/**
+
 
 
 #重写路径
