@@ -9,6 +9,9 @@ import com.ty.gulimall.product.vo.Catelog2Vo;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -98,12 +101,18 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     /**
      * 级联更新所有关联数据
      */
+//	@Caching(evict = {
+//			@CacheEvict(value = {"category"}, key = "'getLevel1Categorys'"),
+//			@CacheEvict(value = {"category"}, key = "'getCatelogJson'")
+//	})
+    @CacheEvict(value = "category",  allEntries = true)
     @Transactional
     public void updateCascade(CategoryEntity categoryEntity){
         this.updateById(categoryEntity);
         categoryBrandRelationService.updateCategory(categoryEntity.getCatId(), categoryEntity.getName());
     }
 
+    @Cacheable(value = {"category"}, key = "#root.methodName")
     @Override
     public List<CategoryEntity> getLevel1Categorys() {
         return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("cat_level", 1));
@@ -115,6 +124,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      * 从数据库中获取三级分类。
      * @return
      */
+    @Cacheable(value = "category", key = "#root.methodName")
     @Override
     public Map<String, List<Catelog2Vo>> getCatelogJson() {
         List<CategoryEntity> entityList = baseMapper.selectList(null);
