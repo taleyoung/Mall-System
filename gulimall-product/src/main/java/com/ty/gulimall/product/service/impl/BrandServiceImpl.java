@@ -5,6 +5,8 @@ import com.ty.gulimall.product.service.CategoryBrandRelationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -47,5 +49,10 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
         if(!StringUtils.isEmpty(brandEntity.getName())){
             categoryBrandRelationService.updateBrand(brandEntity.getBrandId(), brandEntity.getName());
         }
+    }
+
+    @Override
+    public List<BrandEntity> getBrandByIds(List<Long> brandIds) {
+        return baseMapper.selectList(new QueryWrapper<BrandEntity>().in("brand_id",brandIds));
     }
 }
