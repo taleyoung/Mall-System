@@ -42,6 +42,31 @@ spring:
           predicates:
             - Host=search.glmall.com
 
+        - id: auth_route
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Host=auth.glmall.com
+
+        - id: seckill_route
+          uri: lb://gulimall-seckill
+          predicates:
+            - Host=seckill.glmall.com
+
+        - id: cart_route
+          uri: lb://gulimall-cart
+          predicates:
+            - Host=cart.glmall.com
+
+        - id: member_route
+          uri: lb://gulimall-member
+          predicates:
+            - Host=member.glmall.com
+
+        - id: order_route
+          uri: lb://gulimall-order
+          predicates:
+            - Host=order.glmall.com
+
         - id: mall_route
           uri: lb://gulimall-product
           predicates:
