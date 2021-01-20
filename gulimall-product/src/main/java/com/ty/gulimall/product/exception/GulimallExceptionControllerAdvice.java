@@ -27,7 +27,7 @@ public class GulimallExceptionControllerAdvice {
         bindingResult.getFieldErrors().forEach(fieldError -> {
             errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
         });
-        return R.error(BizCodeEnume.VALID_EXCEPTION.getCode(),BizCodeEnume.VALID_EXCEPTION.getMsg()).put("data", errorMap);
+        return R.error(BizCodeEnume.VAILD_EXCEPTION.getCode(),BizCodeEnume.VAILD_EXCEPTION.getMsg()).put("data", errorMap);
     }
 
     @ExceptionHandler(value = Throwable.class)

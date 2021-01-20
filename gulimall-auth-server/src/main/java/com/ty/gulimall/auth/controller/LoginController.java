@@ -47,6 +47,7 @@ public class LoginController {
 	public String loginPage(HttpSession session){
 		Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
 		if(attribute == null){
+			//没登录
 			return "login";
 		}
 		return "redirect:http://glmall.com";

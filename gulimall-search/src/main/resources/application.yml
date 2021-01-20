@@ -1,3 +1,5 @@
+ipAddr: 39.105.35.4
+
 spring:
   cloud:
     nacos:
@@ -8,6 +10,10 @@ spring:
   elasticsearch:
     rest:
       uris: ["http://39.105.35.4:9200"]
+  session:
+    store-type: redis
+  redis:
+    host: ${ipAddr}
 
 server:
   port: 12000
